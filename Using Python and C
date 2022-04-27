@@ -1,4 +1,59 @@
-【Python 與 C 的 LeetCode 六月挑戰】第一天 (Invert Binary Tree)
+Random Pick with Weight
+語法:python 練習"累積和(sum)圖"
+
+class Solution:
+
+    def __init__(self, w: List[int]):
+        a = [None] * len(w)
+        a[0] = w[0]
+        for i in range(1, len(w)):
+            a[i] =a[i-1] + w[i]
+        self._a = a
+    # 用套件簡化
+    # def __init__(self, w: List[int]):
+    #     self._a = tuple(accumulate(w))   
+
+    def pickIndex(self) -> int:
+        d = random.randrange(self._a[-1])
+        # 用binary search
+        #找一個i使得d < self._a[i] and d >= self._a[i-1]
+        l, r = 0, len(self._a)
+        
+        while l < r:
+            mid = (l+r)//2
+            if d < self._a[mid]:
+                if mid == 0 or d >= self._a[mid-1]:
+                    return mid 
+                else:
+                    r = mid
+            else:
+                l = mid +1
+    # 用套件簡化
+    # def pickIndex(self) -> int:
+    #     d = random.randrange(self._a[-1])
+    #     return bisect_right(self._a, d)
+#     編號:0 1 2
+#     w:  [1,3,3]  ->意思是有1個0 3個1 3個2
+
+#           1     4     7  
+#           v     v     v 
+#     d:  0 1 2 3 4 5 6   d(dice)就是骰子，從0~6中隨機選一個
+#     l: [0,1,1,1,2,2,2] 
+#     a: [1,4,7] 
+#     a[0] 儲存的是 w[0]
+#     a[1] 儲存的是 w[0] + w[1]         = a[0] + w[1]
+#     a[2] 儲存的是 w[0] + w[1] + w[2]  = a[1] + w[2]
+
+#  由於l會隨著w增加而增加，所以如果硬要產生l的話，時間複雜度會很大，所以利用"累積和圖"的技巧來
+#  取代l，也就是a
+# a是編號變號的timing，1代表編號0有1個，4代表編號0+編號1有4個，7代表編號0+編號1+編號2有7個。
+# 所以如果骰到5，因為5(d) < 7(c)，所以其值為2
+    
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(w)
+# param_1 = obj.pickIndex()
+--------------------------------------------------------------------------
+Invert Binary Tree
 (語法python)
 # Definition for a binary tree node.
 # class TreeNode:
@@ -45,8 +100,8 @@ struct TreeNode* invertTree(struct TreeNode* root){
     return root;
 
 }
-
-【Python 與 C 的 LeetCode 六月挑戰】第二天 (Delete Node in a Linked List)
+---------------------------------------------------------------
+Delete Node in a Linked List
 語法:python
 # Definition for singly-linked list.
 # class ListNode:
@@ -85,7 +140,8 @@ void deleteNode(struct ListNode* node) {
     free(temp);
     
 }
-【Python 與 C 的 LeetCode 六月挑戰】第三天 (Two City Scheduling)
+-------------------------------------------------------------------------
+Two City Scheduling
 語法:python
 重點語法:sort(排序)!!!!!
 def diff(l):
@@ -140,8 +196,8 @@ int twoCitySchedCost(int** costs, int costsSize, int* costsColSize){
     return ans;
 }
 
-
-【Python 與 C 的 LeetCode 六月挑戰】第四天 (Reverse String)
+------------------------------------------------------------------------------------------
+Reverse String
 語法:python 練習list語法
 class Solution:
     def reverseString(self, s: List[str]) -> None:
@@ -164,8 +220,8 @@ void reverseString(char* s, int sSize){
         sj--;
     }
 }
-
-【Python 與 C 的 LeetCode 六月挑戰】第五天 (Random Pick with Weight)
+---------------------------------------------------------------------------------------
+Random Pick with Weight
 語法:python 練習"累積和(sum)圖"
 
 class Solution:
@@ -220,8 +276,8 @@ class Solution:
 # obj = Solution(w)
 # param_1 = obj.pickIndex()
 
-
-【Python 與 C 的 LeetCode 六月挑戰】第六天 (Queue Reconstruction by Height)
+-----------------------------------------------------------
+Queue Reconstruction by Height
 語法:python 
 #將input的list做成tuple(元組，以利第一個元素相比，結果平手的話，就再比第二個元素)，
 # 可以達到排序的目的，先用第一個元素作為比較對象來sort(加負號使得元素由大到小排)，如果第一個元素大小相等，就比較第二個元素來sort
@@ -249,9 +305,9 @@ class Solution:
             # [[[7,0],[6,1],[7,1]]    answer.insert(1, [6,1]) 在位置1上insert[6,1]
             # ...
         return answer
+--------------------------------------------------------------------------
 
-
-【Python 與 C 的 LeetCode 六月挑戰】第七天 (Coin Change 2)
+Coin Change 2
 語法:python 
 def change(amount,coins,cache):
         #為了加速runtime: 加入cache(大括弧{})來記錄已算過的找法(組合)
@@ -294,8 +350,8 @@ def change(amount,coins,cache):
 class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
         return change(amount, coins,{})
-
-【Python 與 C 的 LeetCode 六月挑戰】第八天 (Power of Two)
+----------------------------------------------------------
+Power of Two
 語法:python        
 def isPowerOfTwo(n):
     if n <=0 :
@@ -310,8 +366,8 @@ bool isPowerOfTwo(int n){
     return n > 0 && (n&(n-1))==0;
 
 }
-
-【Python 與 C 的 LeetCode 六月挑戰】第九天 (Is Subsequence)
+------------------------------------------------------------
+Is Subsequence
 語法:python
 練習重點: 雙指標
 class Solution:
@@ -363,7 +419,8 @@ bool isSubsequence(char * s, char * t){
         }
     }
 }
-【Python 與 C 的 LeetCode 六月挑戰】第十天 (Search Insert Position)
+----------------------------------------------------------------------------
+Search Insert Position
 語法:python 
 練習重點: binary search
 def searchInsert(nums,target):
@@ -414,8 +471,8 @@ class Solution:
 
 }
 
-
-【Python 與 C 的 LeetCode 六月挑戰】第十一天 (Sort Colors)
+----------------------------------------------------------------------
+Sort Colors
 語法:python
 # !!!!!!!如果一個問題可以用"排序(sort)"解決，那也可以用"算次數"的方式解決!!!!!!!
 class Solution:
@@ -466,9 +523,9 @@ void sortColors(int* nums, int numsSize){
 
     }
 }
+-------------------------------------------------------------------
 
-
-【Python 與 C 的 LeetCode 六月挑戰】第十二天 (Insert Delete GetRandom O(1))
+Insert Delete GetRandom O(1)
 語法:python 
 
 class RandomizedSet:
@@ -523,8 +580,8 @@ class RandomizedSet:
 # param_1 = obj.insert(val)
 # param_2 = obj.remove(val)
 # param_3 = obj.getRandom()
-
-【Python 與 C 的 LeetCode 六月挑戰】第十四天 (Cheapest Flights Within K Stops)
+---------------------------------------------------------------------------------------------
+Cheapest Flights Within K Stops
 語法:python 
 練習重點: 遞迴
 def findCheapestPrice(n,flightMap,src,dst,k,cache):
