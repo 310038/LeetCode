@@ -28,7 +28,7 @@ ListNode mergeTwoLists(ListNode l1, ListNode l2) {
     
     return dummy.next;
 }
-
+-------------------------------------------------------------------------------------------------------------------------------------------------
 
 23. Merge k Sorted Lists
 /*先建立一個自帶Comparator的min-oriented PriorityQueue。初始把所有非空list head都放進pq， 之後poll出當前最小的值設置為node.next，假如這條list非空，則將其之後的節點作為head放入pq中繼續進行比較。這里insert和deleteMin操作復雜度都是O(logk)，k是lists.length
@@ -56,5 +56,37 @@ class Solution {
             p = p.next;
         }
         return dummy.next;
+    }
+}
+-------------------------------------------------------------------------------------------------------------------------------------------------
+19. Remove Nth Node From End of Lis
+class Solution {
+    // 主函数
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        // 虚拟头结点
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        // 删除倒数第 n 个，要先找倒数第 n + 1 个节点
+        ListNode x = findFromEnd(dummy, n + 1);
+        // 删掉倒数第 n 个节点
+        x.next = x.next.next;
+        return dummy.next;
+    }
+
+    // 返回链表的倒数第 k 个节点
+    ListNode findFromEnd(ListNode head, int k) {
+        ListNode p1 = head;
+        // p1 先走 k 步
+        for (int i = 0; i < k; i++) {
+            p1 = p1.next;
+        }
+        ListNode p2 = head;
+        // p1 和 p2 同时走 n - k 步
+        while (p1 != null) {
+            p2 = p2.next;
+            p1 = p1.next;
+        }
+        // p2 现在指向第 n - k 个节点
+        return p2;
     }
 }
