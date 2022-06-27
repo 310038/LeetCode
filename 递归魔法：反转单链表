@@ -1,0 +1,86 @@
+206. Reverse Linked List
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode reverseList(ListNode head) {
+    if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode last = reverseList(head.next); //開始堆stack到最後一個node.
+        //以下兩行code才是真正實現reverse的code
+        head.next.next = head;
+        head.next = null;
+        
+        return last;
+    }
+}
+/*
+            第一轮出栈，head为5，head.next为空，返回5
+            第二轮出栈，head为4，head.next为5，执行head.next.next=head也就是5.next=4，
+                      把当前节点的子节点的子节点指向当前节点
+                      此时链表为1->2->3->4<->5，由于4与5互相指向，所以此处要断开4.next=null
+                      此时链表为1->2->3->4<-5
+                      返回节点5
+            第三轮出栈，head为3，head.next为4，执行head.next.next=head也就是4.next=3，
+                      此时链表为1->2->3<->4<-5，由于3与4互相指向，所以此处要断开3.next=null
+                      此时链表为1->2->3<-4<-5
+                      返回节点5
+            第四轮出栈，head为2，head.next为3，执行head.next.next=head也就是3.next=2，
+                      此时链表为1->2<->3<-4<-5，由于2与3互相指向，所以此处要断开2.next=null
+                      此时链表为1->2<-3<-4<-5
+                      返回节点5
+            第五轮出栈，head为1，head.next为2，执行head.next.next=head也就是2.next=1，
+                      此时链表为1<->2<-3<-4<-5，由于1与2互相指向，所以此处要断开1.next=null
+                      此时链表为1<-2<-3<-4<-5
+                      返回节点5
+            出栈完成，最终头节点5->4->3->2->1
+         */
+
+92. Reverse Linked List II
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        // base case
+        if (m == 1) {
+            return reverseN(head, n);
+        }
+        // 前进到反转的起点触发 base case
+        head.next = reverseBetween(head.next, m - 1, n - 1);
+        // head.nex要儲存reverseBetween(head.next, m - 1, n - 1)是这个意思，这是递归对数据结构进行修改的常见操作，head.next 必须接收对 head.next 的递归返回值，否则无法做到修改链表结构的作用。类似的，你去看 BST 的增删查改，都是这种模式。
+        return head;
+    }
+
+    ListNode successor = null; // 后驱节点
+    // 反转以 head 为起点的 n 个节点，返回新的头结点
+    ListNode reverseN(ListNode head, int n) {
+        if (n == 1) {
+            // 记录第 n + 1 个节点
+            successor = head.next;
+            return head;
+        }
+        // 以 head.next 为起点，需要反转前 n - 1 个节点
+        ListNode last = reverseN(head.next, n - 1);
+
+        head.next.next = head;
+        // 让反转之后的 head 节点和后面的节点连起来
+        head.next = successor;
+        return last;
+    }
+}
