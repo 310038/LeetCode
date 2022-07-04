@@ -1,0 +1,79 @@
+104. Maximum Depth of Binary Tree
+
+/***** 解法2，动态规划思路 *****/
+class Solution2 {
+    // 定义：输入一个节点，返回以该节点为根的二叉树的最大深度
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int leftMax = maxDepth(root.left);
+        int rightMax = maxDepth(root.right);
+        // 根据左右子树的最大深度推出原二叉树的最大深度
+        return 1 + Math.max(leftMax, rightMax);
+    }
+}
+
+144. Binary Tree Preorder Traversal
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        LinkedList<Integer> res = new LinkedList<>();
+        if(root == null) return res;
+        res.add(root.val);
+        res.addAll(preorderTraversal(root.left));
+        res.addAll(preorderTraversal(root.right));
+        return res;
+    }
+}
+
+543. Diameter of Binary Tree
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int maxDiameter = 0;
+    public int diameterOfBinaryTree(TreeNode root) {
+        maxDepth(root);
+        return maxDiameter;
+    }
+    
+    int maxDepth(TreeNode root){
+        if(root == null) return 0;
+        
+        int leftMax = maxDepth(root.left);
+        int rightMax = maxDepth(root.right);
+        
+        maxDiameter = Math.max(maxDiameter,leftMax+rightMax);
+        return 1 + Math.max(leftMax,rightMax);
+    }
+}
+/*驗證過! 最後return的是maxDiameter，所以在maxDepth函式中return 1 + Math.max(leftMax,rightMax);是對的 */
